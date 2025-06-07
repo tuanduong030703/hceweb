@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trường Học HCE</title>
+<style>
+body {
+font-family: Arial, sans-serif;
+margin: 0;
+padding: 0;
+text-align: center;
+}
+header {
+background: #ffffff;
+color: rgb(0, 0, 0);
+padding: 15px;
+font-size: 10px;
+}
+nav {
+  background: #ffffff;
+  padding: 10px;
+  border-bottom: 2px solid #f1f1f1;
+}
+nav .dropdown {
+  position: relative;
+  display: inline-block;
+  margin: 0 10px;
+}
+nav .dropbtn {
+  background-color: rgb(255, 0, 0);
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  border-radius: px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+nav .dropbtn:hover {
+  background-color: darkred;
+  transform: scale(1.05);
+}
+nav .dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+  z-index: 1;
+  text-align: left;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  border-radius: 5px;
+}
+nav .dropdown:hover .dropdown-content {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+nav .dropdown-content a {
+  color: black;
+  padding: 10px;
+  display: block;
+  text-decoration: none;
+}
+nav .dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.text {
+  font-size: 24px;
+  font-weight: bold;
+  color: red;
+  animation: blink 1s infinite;
+}
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+section {
+  padding: 50px;
+}
+footer {
+  background: #ff0901;
+  color: white;
+  padding: 10px;
+  position: fixed;
+  width: 100vw;  
+  left: 0;         
+  bottom: 0;
+  z-index: 9999;  
+  box-sizing: border-box;
+}
+.img-effect {
+  width: 900px;
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.img-effect:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 16px rgba(0,0,0,0);
+}
+
+</style>
+</head>
+<body>
+<header>
+
+<img src="https://www.kthcm.edu.vn/wp-content/uploads/2023/10/Ten-truong-do-1000x159.png" alt="anhtruong">
+</header>
+<nav>
+    <nav>
+        <div class="dropdown">
+            <button class="dropbtn"><a href="WEB_0.html" style="color: white; text-decoration: none;">TRANG CHỦ</a></button>
+        </div>
+<div class="dropdown">
+    <button class="dropbtn">GIỚI THIỆU</button>
+    <div class="dropdown-content">
+        
+        <a href="lich su.html">Lịch Sử</a>
+        <a href="thanh tuu.html">Thành Tựu</a>
+    </div>
+</div>
+<div class="dropdown">
+    <button class="dropbtn">TIN TỨC</button>
+    <div class="dropdown-content">
+        <a href="su kien.html">Sự Kiện</a>
+        <a href="hoat dong.html">Hoạt Động</a>
+    </div>
+</div>
+<div class="dropdown">
+    <button class="dropbtn">KHOA</button>
+    <div class="dropdown-content">
+        <a href="cntt.html">Công Nghệ Thông Tin</a>
+  
+    </div>
+</div>
+<div class="dropdown">
+    <button class="dropbtn">LIÊN HỆ</button>
+    <div class="dropdown-content">
+        
+        <a href="ho tro.html">Hỗ Trợ</a>
+    </div>
+</div>
+
+
+<section id="tintuc">
+    <h2 style="color: red;">TIN TỨC </h2>
+    <p>Cập nhật những thông tin mới nhất về hoạt động của trường.</p>
+    <title>Thông Báo</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f8f8f8;
+                margin: 0;
+                padding: 20px;
+            }
+            .news-container {
+                display: flex;
+                gap: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .news-card {
+                background: white;
+                width: 300px;
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                transition: transform 0.3s;
+            }
+            .news-card:hover {
+                transform: translateY(-5px);
+            }
+            .news-card img {
+                width: 100%;
+                height: 150px;
+                object-fit: cover;
+            }
+            .news-content {
+                padding: 15px;
+            }
+            .news-category {
+                color: gray;
+                font-size: 12px;
+                margin-bottom: 5px;
+            }
+            .news-title {
+                font-size: 16px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+            .news-date {
+                font-size: 12px;
+                color: #666;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="news-container">
+            <div class="news-card">
+                <img src="https://www.kthcm.edu.vn/wp-content/uploads/2025/04/6-480x320.png" alt="Thông báo ">
+                <div class="news-content">
+                    <div class="news-category">🔴 TIN TỨC SỰ KIỆN</div>
+                    <div class="news-title"></div>
+                                                   <a href="https://www.kthcm.edu.vn/cuoc-thi-y-tuong-nghien-cuu-khoa-hoc-nam-hoc-2024-2025-san-choi-hoc-thuat-but-pha-tu-duy-cho-sinh-vien-hce" target="_blank">Cuộc thi ý tưởng nghiên cứu khoa học năm học 2024–2025: Sân chơi học thuật bứt phá tư duy cho sinh viên HCE</a>
+
+                    <div class="news-date">Apr 10 , 2025</div>
+                    
+                </div>
+            </div>
+           
+            <div class="news-card">
+                <img src="https://www.kthcm.edu.vn/wp-content/uploads/2025/04/Anh-tin-tuc-480x320.png" alt="Thông báo ">
+                <div class="news-content">
+                    <div class="news-category">🔴 TIN TỨC SỰ KIỆN</div>
+                               <a href="https://www.kthcm.edu.vn/hop-tac-giua-truong-cao-dang-kinh-te-thanh-pho-ho-chi-minh-va-benh-vien-nguyen-trai-mo-rong-co-hoi-cho-sinh-vien-nganh-cong-tac-xa-hoi" target="_blank">Hợp tác giữa Trường Cao đẳng Kinh tế Thành phố Hồ Chí Minh và Bệnh viện Nguyễn Trãi: Mở rộng cơ hội cho sinh viên ngành Công tác xã hội</a>
+
+                    <div class="news-date">Apr 09 , 2025</div>
+                </div>
+            </div>
+           
+            <div class="news-card">
+                <img src="https://www.kthcm.edu.vn/wp-content/uploads/2025/04/70-480x320.png" alt="Thông báo ">
+                <div class="news-content">
+                    <div class="news-category">🔴 TIN TỨC SỰ KIỆN</div>
+            <a href="https://www.kthcm.edu.vn/hoi-nghi-so-ket-hoc-ky-i-va-trien-khai-phuong-huong-nhiem-vu-trong-tam-hoc-ky-ii-nam-hoc-2024-2025" target="_blank">Hội nghị Sơ kết học kỳ I và triển khai phương hướng, nhiệm vụ trọng tâm học kỳ II, năm học 2024 – 2025</a>
+                    <div class="news-date">Apr 09  , 2025</div>
+                </div>
+            </div>
+
+            <div class="news-card">
+                <img src="https://www.kthcm.edu.vn/wp-content/uploads/2025/04/Post-1_z6466070604051_8d20a6d6f266517de24f760e9feb2581-480x320.jpg" alt="Thông báo ">
+                <div class="news-content">
+                    <div class="news-category">🔴 TIN TỨC SỰ KIỆN   </div>
+                    <a href="https://www.kthcm.edu.vn/ky-niem-50-nam-ngay-giai-phong-mien-nam-thong-nhat-dat-nuoc-30-4-1975-30-4-2025" target="_blank">Kỷ niệm 50 năm Ngày Giải phóng miền Nam, thống nhất đất nước (30/4/1975 – 30/4/2025)</a>
+
+                    <div class="news-date">Apr 09, 2025</div>
+                </div>
+            </div>
+
+
+            <div class="news-card">
+                <img src="https://www.kthcm.edu.vn/wp-content/uploads/2024/07/THONG-BAO-KET-QUA-PHUC-KHAO-480x320.jpg" alt="Thông báo ">
+                <div class="news-content">
+                    <div class="news-category">🔴 THÔNG BÁO KHẢO THÍ  </div>
+                    <div class="news-title"></div> 
+                                            <a href="https://www.kthcm.edu.vn/thong-bao-phuc-khao-bai-thi-hk-1-nh-2024-2025-thi-lan-1-trinh-do-cao-dang" target="_blank">Thông báo kết quả phúc khảo bài thi HK1</a>
+
+                    <div class="news-date">Apr 01, 2025</div>
+                </div>
+            </div>
+            
+            <div class="news-card">
+                <img src="https://www.kthcm.edu.vn/wp-content/uploads/2025/03/KET-QUA-THI-1-480x320.png" alt="Thông báo ">
+                <div class="news-content">
+                    <div class="news-category">🔴 ĐÀO TẠO NGOẠI NGỮ</div>
+                        <a href="https://www.kthcm.edu.vn/ket-qua-thi-danh-gia-nang-luc-ngoai-ngu-anh-van-chuan-dau-ra-ngay-23-03-2025" target="_blank">Kết quả thi đánh giá năng lực ngoại ngữ</a>
+
+                    <div class="news-date">Mar 28, 2025</div>
+                </div>
+            </div>
+            
+            <div class="news-card">
+                <img src="https://www.kthcm.edu.vn/wp-content/uploads/2024/05/phuc-khao.jpg" alt="Thông báo ">
+                <div class="news-content">
+                    <div class="news-category">🔴 THÔNG BÁO KHẢO THÍ</div>
+                        <a href="https://www.kthcm.edu.vn/thong-bao-phuc-khao-bai-thi-hk1-nh-24-25-thi-lan-2-trinh-do-cao-dang" target="_blank">Thông báo phúc khảo bài thi HK1 lần 2</a>
+
+                    <div class="news-date">Mar 25, 2025</div>
+                </div>
+            </div>
+
+            
+        </div>
+    </section>
+
+    <br></p>
+    <footer>
+&copy; 2025 Ho Chi Minh City College Of Economic. All rights reserved.
+</footer>
+<!-- Intro Screen with Bigger Fireworks -->
+<div id="intro" style="
+  position: fixed;
+  z-index: 99999;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  opacity: 1;
+  transition: opacity 1s ease, transform 1s ease;
+  transform: scale(1);
+">
+  <img
+    src="https://i.postimg.cc/MKwJbbDz/hce.png"
+    alt="Logo Trường HCE"
+    class="logo-fly-up"
+    style="width:250px; margin-bottom: 40px; border-radius: 10px;"
+  />
+
+  <!-- Bigger Fireworks container -->
+  <div class="fireworks-container" style="position: relative; width: 400px; height: 400px;">
+    <div class="firework"></div>
+    <div class="firework delay1"></div>
+    <div class="firework delay2"></div>
+  </div>
+</div>
+
+<style>
+  /* Logo fly up animation */
+  .logo-fly-up {
+    animation: flyUp 2s ease forwards;
+  }
+
+  @keyframes flyUp {
+    0% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-150px);
+      opacity: 0;
+    }
+  }
+
+  /* Bigger firework dot */
+  .firework {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    background: radial-gradient(circle, #ffec00, #ff6600);
+    border-radius: 50%;
+    transform-origin: center bottom;
+    animation: fireworkUp 1.2s ease forwards, spark 1.2s ease forwards;
+  }
+  .firework.delay1 {
+    animation-delay: 0.2s, 0.2s;
+    left: 35%;
+  }
+  .firework.delay2 {
+    animation-delay: 0.4s, 0.4s;
+    left: 65%;
+  }
+
+  @keyframes fireworkUp {
+    0% {
+      bottom: 0;
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+    70% {
+      bottom: 240px;
+      opacity: 1;
+      transform: translateX(0) scale(1.2);
+    }
+    100% {
+      bottom: 240px;
+      opacity: 0;
+      transform: translateX(0) scale(1.5);
+    }
+  }
+
+  @keyframes spark {
+    0%, 60% {
+      box-shadow: none;
+    }
+    100% {
+      box-shadow:
+        0 -30px 16px #ff0,
+        20px -20px 16px #f80,
+        -20px -20px 16px #ff0,
+        30px 0 16px #f80,
+        -30px 0 16px #ff0,
+        20px 20px 16px #f80,
+        -20px 20px 16px #ff0,
+        0 30px 16px #f80;
+    }
+  }
+</style>
+
+<script>
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const intro = document.getElementById('intro');
+      intro.style.opacity = '0';
+      intro.style.transform = 'scale(0.8)';
+      setTimeout(() => intro.style.display = 'none', 1000);
+    }, 1000);
+  });
+</script>
+    
+</body>
+</html>
