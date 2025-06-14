@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý tin tức HCE</title>
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    const supabase = createClient('https://psosmtzzfxgzemuqdjxq.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBzb3NtdHp6ZnhnemVtdXFkanhxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTc5NDgxMCwiZXhwIjoyMDY1MzcwODEwfQ.kIldWLTs6e1gMSQFw8DWrJgXT7sRwZIh7sPc--oTYOI');
+
+    async function fetchNews() {
+      const { data, error } = await supabase.from("news").select("*").order("id", { ascending: false });
+      const list = document.getElementById("news-list");
+      list.innerHTML = "";
+      data.forEach(item => {
+        const card = `
+  <div class="news-card" data-id="${item.id}">
+    <a href="news.html?id=${item.id}" style="text-decoration: none; color: inherit;">
+      <img src="${item.image_url}" alt="Tin tức">
+      <div class="news-content">
+        <div class="news-category"> 🔴 THÔNG BÁO</div>
+        <div class="news-title">${item.title}</div>
+        <div class="news-date">${item.content}</div>
+      </div>
+    </a>
+    <button onclick="editNews(${item.id}, '${item.title}', '${item.content}', '${item.image_url}')">✏️ Sửa</button>
+    <button onclick="deleteNews(${item.id})">🗑️ Xoá</button>
+  </div>`;
+
+        list.innerHTML += card;
+      });
+    }
+    window.fetchNews = fetchNews;
+
+    window.addNews = async function() {
+      const title = document.getElementById("title").value;
+      const content = document.getElementById("content").value;
+      const image_url = document.getElementById("image_url").value;
+      const { error } = await supabase.from("news").insert([{ title, content, image_url }]);
+      if (error) alert("❌ Thêm thất bại: " + error.message);
+      else {
+        alert("✅ Thêm thành công!");
+        fetchNews();
+      }
+    };
+
+    window.deleteNews = async function(id) {
+      if (!confirm("Bạn có chắc muốn xoá?")) return;
+      const { error } = await supabase.from("news").delete().eq("id", id);
+      if (error) alert("❌ Xoá thất bại: " + error.message);
+      else {
+        alert("✅ Đã xoá");
+        fetchNews();
+      }
+    };
+
+    window.editNews = function(id, title, content, image_url) {
+      document.getElementById("title").value = title;
+      document.getElementById("content").value = content;
+      document.getElementById("image_url").value = image_url;
+      const btn = document.querySelector("button[onclick='addNews()']");
+      btn.textContent = "💾 Lưu";
+      btn.onclick = async function() {
+        const newTitle = document.getElementById("title").value;
+        const newContent = document.getElementById("content").value;
+        const newImageUrl = document.getElementById("image_url").value;
+        const { error } = await supabase.from("news").update({
+          title: newTitle, content: newContent, image_url: newImageUrl
+        }).eq("id", id);
+        if (error) alert("❌ Cập nhật thất bại: " + error.message);
+        else {
+          alert("✅ Cập nhật thành công!");
+          btn.textContent = "➕ Thêm";
+          btn.onclick = addNews;
+          fetchNews();
+        }
+      };
+    };
+
+    fetchNews();
+  </script>
+  <style>
+   body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+#news-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+}
+.news-card {
+  width: 300px;
+  margin: 5px auto;
+  border: 8px solid #ccc;
+  border-radius: 1px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.news-card:hover {
+  transform: scale(1.03); /* zoom nhẹ */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+
+.news-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+.news-content {
+  padding: 10px;
+}
+.news-title {
+  font-weight: bold;
+  margin: 10px 0;
+}
+.news-category {
+  color: red;
+}
+input {
+  padding: 5px;
+  margin: 5px;
+  width: 200px;
+}
+button {
+  padding: 5px 10px;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 4px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+}
+button:hover {
+  background-color: #0056b3;
+}
+
+ 
+
+  </style>
+</head>
+<body>
+  <h1 style="background-color: #0056b3; color: white; padding: 10px;">Danh sách tin tức HCE</h1>
+
+  <div style="background: #f9f9f9; padding: 20px;">
+    <h2>📰 Quản lý Tin tức HCE</h2>
+    <input type="text" id="title" placeholder="Tiêu đề">
+    <input type="text" id="content" placeholder="Nội dung">
+    <input type="text" id="image_url" placeholder="Link ảnh">
+    <button onclick="addNews()">➕ Thêm</button>
+  </div>
+
+  <div id="news-list"></div>
+</body>
+</html>

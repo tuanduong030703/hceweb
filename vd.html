@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tin tức - Sự kiện HCE</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    header {
+      background: #ffffff;
+      padding: 15px;
+    }
+
+    nav {
+      background: #ffffff;
+      padding: 10px;
+      border-bottom: 2px solid #f1f1f1;
+    }
+
+    .dropdown {
+      display: inline-block;
+      position: relative;
+      margin: 0 10px;
+    }
+
+    .dropbtn {
+      background-color: red;
+      color: white;
+      padding: 10px 16px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .dropbtn a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: white;
+      min-width: 180px;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+      z-index: 1;
+      text-align: left;
+    }
+
+    .dropdown-content a {
+      color: black;
+      padding: 10px 15px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #f1f1f1;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    h2 {
+      color: red;
+      margin-top: 20px;
+    }
+
+    .news-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 30px;
+    }
+
+    .news-card {
+      width: 300px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      background-color: white;
+    }
+
+    .news-card:hover {
+      transform: scale(1.03);
+    }
+
+    .news-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .news-content {
+      padding: 15px;
+      text-align: left;
+    }
+
+    .news-category {
+      color: red;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .news-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .news-date {
+      color: #333;
+      font-size: 14px;
+    }
+
+    footer {
+      background: #ff0901;
+      color: white;
+      padding: 10px;
+      margin-top: 40px;
+    }
+  </style>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabase = createClient(
+      'https://psosmtzzfxgzemuqdjxq.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBzb3NtdHp6ZnhnemVtdXFkanhxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTc5NDgxMCwiZXhwIjoyMDY1MzcwODEwfQ.kIldWLTs6e1gMSQFw8DWrJgXT7sRwZIh7sPc--oTYOI'
+    );
+
+    async function fetchNews() {
+      const { data, error } = await supabase
+        .from("news")
+        .select("*")
+        .order("id", { ascending: false });
+
+      const list = document.getElementById("news-list");
+      list.innerHTML = "";
+
+      if (error) {
+        list.innerHTML = "<p>Không thể tải dữ liệu.</p>";
+        return;
+      }
+
+      data.forEach(item => {
+        const card = `
+          <div class="news-card" onclick="goToNews(${item.id})">
+            <img src="${item.image_url}" alt="Tin tức">
+            <div class="news-content">
+              <div class="news-category">🔴 THÔNG BÁO</div>
+              <div class="news-title">${item.title}</div>
+              <div class="news-date">${item.content}</div>
+            </div>
+          </div>`;
+        list.innerHTML += card;
+      });
+    }
+
+    window.goToNews = function(id) {
+      window.location.href = `news.html?id=${id}`;
+    }
+
+    fetchNews();
+  </script>
+</head>
+
+<body>
+  <header>
+    <img src="https://www.kthcm.edu.vn/wp-content/uploads/2023/10/Ten-truong-do-1000x159.png" alt="logo trường" />
+  </header>
+
+  <nav>
+    <div class="dropdown">
+      <button class="dropbtn"><a href="WEB_0.html">TRANG CHỦ</a></button>
+    </div>
+    <div class="dropdown">
+      <button class="dropbtn">GIỚI THIỆU</button>
+      <div class="dropdown-content">
+        <a href="lich su.html">Lịch Sử</a>
+        <a href="thanh tuu.html">Thành Tựu</a>
+      </div>
+    </div>
+    <div class="dropdown">
+      <button class="dropbtn">TIN TỨC</button>
+      <div class="dropdown-content">
+        <a href="vd.html">Sự kiện</a>
+        <a href="hoat dong.html">Hoạt động</a>
+      </div>
+    </div>
+    <div class="dropdown">
+      <button class="dropbtn">KHOA</button>
+      <div class="dropdown-content">
+        <a href="cntt.html">Công Nghệ Thông Tin</a>
+        <!-- Bạn có thể thêm các khoa khác ở đây -->
+      </div>
+    </div>
+    <div class="dropdown">
+      <button class="dropbtn">LIÊN HỆ</button>
+      <div class="dropdown-content">
+        <a href="ho tro.html">Hỗ Trợ</a>
+      </div>
+    </div>
+  </nav>
+
+  <section>
+    <h2>TIN TỨC - SỰ KIỆN</h2>
+    <div class="news-container" id="news-list"></div>
+  </section>
+
+  <footer>&copy; 2025 Ho Chi Minh City College Of Economics. All rights reserved.</footer>
+</body>
+</html>

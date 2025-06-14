@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Manage Contact Info</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box; /* Include padding in width */
+        }
+        .actions button {
+            padding: 10px 15px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .actions .add-btn { background-color: #28a745; color: white; }
+        .actions .update-btn { background-color: #007bff; color: white; }
+        .actions .delete-btn { background-color: #dc3545; color: white; }
+        .contact-list { margin-top: 30px; }
+        .contact-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #eee;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .contact-item button { margin-left: 10px; }
+        .message { margin-top: 20px; padding: 10px; border-radius: 5px; }
+        .message.success { background-color: #d4edda; color: #155724; border-color: #c3e6cb; }
+        .message.error { background-color: #f8d7da; color: #721c24; border-color: #f5c6cb; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Manage Contact Information</h1>
+
+        <div id="message" class="message" style="display:none;"></div>
+
+        <form id="contact-form">
+            <input type="hidden" id="contact-id">
+            <div class="form-group">
+                <label for="type">Type:</label>
+                <select id="type" required>
+                    <option value="">Select Type</option>
+                    <option value="address">Address</option>
+                    <option value="phone">Phone</option>
+                    <option value="facebook">Facebook</option>
+                    <option value="email">Email</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="icon_class">Icon Class (Font Awesome):</label>
+                <input type="text" id="icon_class" placeholder="e.g., fas fa-map-marker-alt" required>
+            </div>
+            <div class="form-group">
+                <label for="icon_color">Icon Color:</label>
+                <input type="text" id="icon_color" placeholder="e.g., red, #007bff" required>
+            </div>
+            <div class="form-group">
+                <label for="title">Title:</label>
+                <input type="text" id="title" placeholder="e.g., Gặp gỡ giảng viên tại địa chỉ" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" rows="2" placeholder="e.g., Sinh viên có thể liên hệ trực tiếp..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="link_text">Link Text:</label>
+                <input type="text" id="link_text" placeholder="e.g., 33 Đ. Vĩnh Viễn, Phường 2..." required>
+            </div>
+            <div class="form-group">
+                <label for="link_url">Link URL:</label>
+                <input type="text" id="link_url" placeholder="e.g., https://maps.app.goo.gl/bJFysqaTQX8XFqPV7" required>
+            </div>
+            <div class="form-group">
+                <label for="additional_info">Additional Info:</label>
+                <textarea id="additional_info" rows="2" placeholder="e.g., Tại phòng công tác học sinh..."></textarea>
+            </div>
+            <div class="actions">
+                <button type="submit" class="add-btn" id="add-btn">Add New</button>
+                <button type="button" class="update-btn" id="update-btn" style="display:none;">Update</button>
+                <button type="button" class="cancel-btn" id="cancel-btn" style="display:none;">Cancel</button>
+            </div>
+        </form>
+
+        <div class="contact-list" id="contact-list">
+            </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // admin.js (or directly in admin.html script tag)
+
+        // 1. Initialize Supabase Client (use the same keys)
+        const SUPABASE_URL = 'https://uhfjyojyuakvndcamhra.supabase.co'; // Replace with your Supabase Project URL
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVoZmp5b2p5dWFrdm5kY2FtaHJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3OTIzNzksImV4cCI6MjA2NTM2ODM3OX0.kWjYH41sV2CBIrN83mfnV-EI0lfAKCO0eDCaIdcJm6Q'; // Replace with your Supabase Anon Public Key
+        const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const contactForm = document.getElementById('contact-form');
+        const contactIdField = document.getElementById('contact-id');
+        const typeField = document.getElementById('type');
+        const iconClassField = document.getElementById('icon_class');
+        const iconColorField = document.getElementById('icon_color');
+        const titleField = document.getElementById('title');
+        const descriptionField = document.getElementById('description');
+        const linkTextField = document.getElementById('link_text');
+        const linkUrlField = document.getElementById('link_url');
+        const additionalInfoField = document.getElementById('additional_info');
+        const addBtn = document.getElementById('add-btn');
+        const updateBtn = document.getElementById('update-btn');
+        const cancelBtn = document.getElementById('cancel-btn');
+        const contactListDiv = document.getElementById('contact-list');
+        const messageDiv = document.getElementById('message');
+
+        let editingId = null;
+
+        function showMessage(msg, type) {
+            messageDiv.textContent = msg;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = 'block';
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        // Fetch and Display Contact Items
+        async function fetchAndDisplayContactItems() {
+            const { data, error } = await supabase
+                .from('contact_info')
+                .select('*')
+                .order('type', { ascending: true });
+
+            if (error) {
+                console.error('Error fetching contact items:', error.message);
+                showMessage('Error loading contact items.', 'error');
+                return;
+            }
+
+            contactListDiv.innerHTML = '';
+            data.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'contact-item';
+                itemDiv.innerHTML = `
+                    <span><strong>${item.title}</strong> (${item.type})</span>
+                    <div>
+                        <button onclick="editContact('${item.id}')">Edit</button>
+                        <button onclick="deleteContact('${item.id}')" class="delete-btn">Delete</button>
+                    </div>
+                `;
+                contactListDiv.appendChild(itemDiv);
+            });
+        }
+
+        // Add Contact
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const newContact = {
+                type: typeField.value,
+                icon_class: iconClassField.value,
+                icon_color: iconColorField.value,
+                title: titleField.value,
+                description: descriptionField.value || null,
+                link_text: linkTextField.value,
+                link_url: linkUrlField.value,
+                additional_info: additionalInfoField.value || null,
+            };
+
+            const { data, error } = await supabase
+                .from('contact_info')
+                .insert([newContact]);
+
+            if (error) {
+                console.error('Error adding contact:', error.message);
+                showMessage('Error adding contact.', 'error');
+            } else {
+                showMessage('Contact added successfully!', 'success');
+                contactForm.reset();
+                fetchAndDisplayContactItems();
+            }
+        });
+
+        // Edit Contact (Populate Form)
+        async function editContact(id) {
+            const { data, error } = await supabase
+                .from('contact_info')
+                .select('*')
+                .eq('id', id)
+                .single();
+
+            if (error) {
+                console.error('Error fetching contact for edit:', error.message);
+                showMessage('Error fetching contact for edit.', 'error');
+                return;
+            }
+
+            editingId = id;
+            contactIdField.value = data.id;
+            typeField.value = data.type;
+            iconClassField.value = data.icon_class;
+            iconColorField.value = data.icon_color;
+            titleField.value = data.title;
+            descriptionField.value = data.description || '';
+            linkTextField.value = data.link_text;
+            linkUrlField.value = data.link_url;
+            additionalInfoField.value = data.additional_info || '';
+
+            addBtn.style.display = 'none';
+            updateBtn.style.display = 'inline-block';
+            cancelBtn.style.display = 'inline-block';
+        }
+
+        // Update Contact
+        updateBtn.addEventListener('click', async () => {
+            if (!editingId) return;
+
+            const updatedContact = {
+                type: typeField.value,
+                icon_class: iconClassField.value,
+                icon_color: iconColorField.value,
+                title: titleField.value,
+                description: descriptionField.value || null,
+                link_text: linkTextField.value,
+                link_url: linkUrlField.value,
+                additional_info: additionalInfoField.value || null,
+            };
+
+            const { data, error } = await supabase
+                .from('contact_info')
+                .update(updatedContact)
+                .eq('id', editingId);
+
+            if (error) {
+                console.error('Error updating contact:', error.message);
+                showMessage('Error updating contact.', 'error');
+            } else {
+                showMessage('Contact updated successfully!', 'success');
+                cancelEdit();
+                fetchAndDisplayContactItems();
+            }
+        });
+
+        // Cancel Edit
+        cancelBtn.addEventListener('click', cancelEdit);
+
+        function cancelEdit() {
+            editingId = null;
+            contactForm.reset();
+            addBtn.style.display = 'inline-block';
+            updateBtn.style.display = 'none';
+            cancelBtn.style.display = 'none';
+        }
+
+        // Delete Contact
+        async function deleteContact(id) {
+            if (!confirm('Are you sure you want to delete this contact item?')) {
+                return;
+            }
+
+            const { error } = await supabase
+                .from('contact_info')
+                .delete()
+                .eq('id', id);
+
+            if (error) {
+                console.error('Error deleting contact:', error.message);
+                showMessage('Error deleting contact.', 'error');
+            } else {
+                showMessage('Contact deleted successfully!', 'success');
+                fetchAndDisplayContactItems();
+            }
+        }
+
+        // Initial load
+        document.addEventListener('DOMContentLoaded', fetchAndDisplayContactItems);
+    </script>
+</body>
+</html>

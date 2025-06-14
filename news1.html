@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chi tiết Tin tức</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f9f9f9;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      color: #d00000;
+      font-size: 28px;
+    }
+
+    .date {
+      color: gray;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+  </style>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabase = createClient(
+      'https://psosmtzzfxgzemuqdjxq.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBzb3NtdHp6ZnhnemVtdXFkanhxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTc5NDgxMCwiZXhwIjoyMDY1MzcwODEwfQ.kIldWLTs6e1gMSQFw8DWrJgXT7sRwZIh7sPc--oTYOI'
+    );
+
+    const params = new URLSearchParams(window.location.search);
+    const newsId = params.get("id");
+
+    async function fetchNewsDetail() {
+      const { data, error } = await supabase
+        .from("news")
+        .select("*")
+        .eq("id", newsId)
+        .single();
+
+      const container = document.getElementById("news-detail");
+
+      if (error || !data) {
+        container.innerHTML = "<p>Không tìm thấy tin tức.</p>";
+        return;
+      }
+
+      container.innerHTML = `
+        <h1>${data.title}</h1>
+        <img src="${data.image_url}" alt="Hình ảnh tin tức">
+        <p>${data.content}</p>
+      `;
+    }
+
+    fetchNewsDetail();
+  </script>
+</head>
+
+<body>
+  <div class="container" id="news-detail">
+    <!-- Tin chi tiết sẽ được hiển thị ở đây -->
+  </div>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Đăng ký sinh viên</title>
+  <style>
+    /* Thiết lập mặc định cho toàn bộ trang */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    body, html {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .main-content {
+      display: flex;
+      height: 100vh;
+      width: 100%;
+    }
+
+    /* Form đăng ký */
+    .form-container {
+      width: 30%;
+      background-color: #fff;
+      padding: 40px 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-right: 1px solid #ddd;
+      box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-container h2 {
+      margin-bottom: 10px;
+      color: #333;
+      text-align: center;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .input-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 6px;
+      color: #444;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      transition: border 0.3s;
+    }
+
+    .input-group input:focus {
+      border-color: #6c63ff;
+      outline: none;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      top: 36px;
+      cursor: pointer;
+      font-size: 12px;
+      color: #666;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #ff6363;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #d64d48;
+    }
+
+    .image-box {
+      width: 70%;
+      height: 100%;
+    }
+
+    .image-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .warning-message {
+      color: red;
+      font-size: 14px;
+      margin-bottom: 10px;
+      display: none;
+      text-align: center;
+    }
+
+    .typing-title {
+      font-size: 20px;
+      text-align: center;
+      color: #333;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .dots::after {
+      content: '';
+      display: inline-block;
+      width: 1em;
+      text-align: left;
+      animation: dots 1.5s steps(3, end) infinite;
+    }
+
+    @keyframes dots {
+      0% { content: ''; }
+      33% { content: '.'; }
+      66% { content: '..'; }
+      100% { content: '...'; }
+    }
+
+    .school-name {
+      text-align: center;
+      margin-top: 10px;
+      color: #555;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .main-content {
+        flex-direction: column;
+      }
+      .form-container, .image-box {
+        width: 100%;
+        height: 50%;
+      }
+    }
+    /* 🔄 BẮT ĐẦU: CSS hiệu ứng slideshow ảnh tự động */
+    .image-box {
+      width: 75%;
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .slideshow {
+      display: flex;
+      width: 100%; /* 100% x số ảnh */
+      height: 100%;
+      animation: slideShow 15s infinite ease-in-out;
+    }
+
+    .slideshow img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    @keyframes slideShow {
+      0% { transform: translateX(0%); }
+      33% { transform: translateX(0%); }
+      36% { transform: translateX(-100%); }
+      66% { transform: translateX(-100%); }
+      69% { transform: translateX(-200%); }
+      99% { transform: translateX(-200%); }
+      100% { transform: translateX(0%); }
+    }
+    /* 🔄 KẾT THÚC: CSS hiệu ứng slideshow ảnh tự động */
+  </style>
+</head>
+<body>
+  <div class="main-content">
+    <div class="form-container">
+      <h2 class="typing-title">Đăng ký tài khoản<span class="dots"></span></h2>
+      <p class="school-name">Trường Cao Đẳng Kinh Tế Thành Phố Hồ Chí Minh</p>
+      <form id="register-form">
+        <div class="input-group">
+          <label for="phone">Số điện thoại</label>
+          <input type="tel" id="phone" name="phone" placeholder="VD: 0388888888" required />
+        </div>
+
+        <div class="input-group">
+          <label for="password">Mật khẩu</label>
+          <input type="password" id="password" name="password" required />
+          <span class="toggle-password" onclick="togglePassword('password')">Hiện</span>
+        </div>
+
+        <div class="input-group">
+          <label for="confirmPassword">Nhập lại mật khẩu</label>
+          <input type="password" id="confirmPassword" name="confirmPassword" required />
+          <span class="toggle-password" onclick="togglePassword('confirmPassword')">Hiện</span>
+        </div>
+
+        <p id="warning" class="warning-message">Vui lòng điền đầy đủ thông tin.</p>
+        <button type="submit">Đăng ký</button>
+      </form>
+    </div>
+
+     <!-- 🔄 BẮT ĐẦU: HTML phần slideshow ảnh -->
+    <div class="image-box">
+      <div class="slideshow">
+        <img src="https://i.postimg.cc/gJFZkJBj/z6650960544826-ddc96d3bde83cf4b17fed4c6619cd29f.jpg" alt="Trường 1" />
+        <img src="https://i.postimg.cc/fbBR1bn1/z6650960585488-efe4fec9c790621f5c092ed86471e80e.jpg" alt="Trường 2" />
+        <img src="https://i.postimg.cc/pTSXX1dZ/z6650960601109-da22958e545d0f0895bff9c82eb4c3b6.jpg" alt="Trường 3" />
+      </div>
+    </div>
+    <!-- 🔄 KẾT THÚC: HTML phần slideshow ảnh -->
+  </div>
+
+  <script>
+    // Kiểm tra số điện thoại hợp lệ tại Việt Nam
+    function isValidPhone(phone) {
+      return /^(03|05|07|08|09)\d{8}$/.test(phone);
+    }
+
+    // Kiểm tra độ mạnh mật khẩu (ít nhất 6 ký tự, có số hoặc ký tự đặc biệt)
+    function isStrongPassword(pwd) {
+      return pwd.length >= 6 && /[\d\W]/.test(pwd);
+    }
+
+    // Hàm ẩn/hiện mật khẩu
+    function togglePassword(id) {
+      const input = document.getElementById(id);
+      const toggle = input.nextElementSibling;
+      if (input.type === "password") {
+        input.type = "text";
+        toggle.innerText = "Ẩn";
+      } else {
+        input.type = "password";
+        toggle.innerText = "Hiện";
+      }
+    }
+
+    // Xử lý sự kiện khi gửi form
+    document.getElementById("register-form").addEventListener("submit", function(e) {
+      e.preventDefault(); // Ngăn việc reload trang
+      const phone = document.getElementById("phone").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const confirmPassword = document.getElementById("confirmPassword").value.trim();
+      const warning = document.getElementById("warning");
+
+      // Kiểm tra thông tin bắt buộc
+      if (!phone || !password || !confirmPassword) {
+        warning.textContent = "Vui lòng điền đầy đủ thông tin.";
+        warning.style.display = "block";
+        return;
+      }
+
+      // Ẩn cảnh báo nếu đã đầy đủ
+      warning.style.display = "none";
+
+      // Kiểm tra định dạng số điện thoại
+      if (!isValidPhone(phone)) {
+        alert("Số điện thoại không hợp lệ!");
+        return;
+      }
+
+      // Kiểm tra mật khẩu mạnh
+      if (!isStrongPassword(password)) {
+        alert("Mật khẩu phải ít nhất 6 ký tự và có số hoặc ký tự đặc biệt.");
+        return;
+      }
+
+      // Kiểm tra mật khẩu nhập lại
+      if (password !== confirmPassword) {
+        alert("Mật khẩu nhập lại không khớp.");
+        return;
+      }
+
+      // Kiểm tra số điện thoại đã tồn tại
+      let students = JSON.parse(localStorage.getItem("students")) || [];
+      if (students.some(sv => sv.phone === phone)) {
+        alert("Số điện thoại đã được đăng ký.");
+        return;
+      }
+
+      // Lưu thông tin sinh viên
+      students.push({ phone, password });
+      localStorage.setItem("students", JSON.stringify(students));
+
+     // Thông báo thành công
+alert("Đăng ký thành công bạn sẽ được dẫn về trang đăng nhập!");
+window.location.href = "/dangnhap.html"; // <-- Dẫn về trang đăng nhập
+this.reset(); // Reset form
+
+    });
+  </script>
+</body>
+</html>

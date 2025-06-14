@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chi tiết tin tức</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    img { max-width: 100%; height: auto; }
+    .back-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 15px;
+      background-color: #007BFF;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2 id="title">Đang tải...</h2>
+  <img id="image" src="" alt="Ảnh tin tức" />
+  <p id="content"></p>
+
+  <!-- 🔙 Nút quay lại -->
+  <a href="javascript:history.back()" class="back-button">🔙 Quay lại trang tin</a>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    const supabase = createClient(
+      'https://psosmtzzfxgzemuqdjxq.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBzb3NtdHp6ZnhnemVtdXFkanhxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTc5NDgxMCwiZXhwIjoyMDY1MzcwODEwfQ.kIldWLTs6e1gMSQFw8DWrJgXT7sRwZIh7sPc--oTYOI'
+    );
+
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+
+    async function loadNews() {
+      const { data, error } = await supabase
+        .from("news")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+      if (error || !data) {
+        document.getElementById("title").textContent = "Không tìm thấy tin.";
+        return;
+      }
+
+      document.getElementById("title").textContent = data.title;
+      document.getElementById("image").src = data.image_url || 'https://via.placeholder.com/600x300?text=Không+có+ảnh';
+      document.getElementById("content").textContent = data.content;
+    }
+
+    loadNews();
+  </script>
+</body>
+</html>
